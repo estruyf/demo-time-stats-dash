@@ -76,8 +76,10 @@ function App() {
   const recentStats = getLastNDays(stats, NR_OF_DAYS) // Last 30 days
 
   // For trend calculation, compare last 7 days to previous 7 days
-  const last7Days = getLastNDays(stats, 7)
-  const previous7Days = getLastNDays(stats, NR_OF_DAYS).slice(7)
+  // Get last 14 days of data (most recent first after reverse)
+  const last14DaysData = stats.dailyStats.slice(0, 14).reverse()
+  const last7Days = last14DaysData.slice(0, 7)  // Most recent 7 days
+  const previous7Days = last14DaysData.slice(7, 14)  // Previous 7 days
 
   const calculateTrend = (metric: keyof ReturnType<typeof calculateMetricTotals>) => {
     const currentSum = last7Days.reduce((sum, stat) => {
@@ -97,6 +99,10 @@ function App() {
               (stat.counts.uninstallCount || 0)
       )
     }, 0)
+
+    // Debug logging
+    console.log(`${metric} - Current: ${currentSum}, Previous: ${previousSum}`)
+    console.log(`Last 7 days length: ${last7Days.length}, Previous 7 days length: ${previous7Days.length}`)
 
     // Avoid division by zero
     if (previousSum === 0) return currentSum > 0 ? 100 : 0
