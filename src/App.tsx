@@ -7,6 +7,8 @@ import { StatsTable } from "@/components/stats-table"
 import { DownloadSimpleIcon, EyeIcon, DesktopIcon, ProhibitInsetIcon } from "@phosphor-icons/react"
 import { toast, Toaster } from "sonner"
 
+export const NR_OF_DAYS = 30 // Default to 30 days for stats
+
 function App() {
   const [stats, setStats] = useState<ExtensionStats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -71,11 +73,11 @@ function App() {
   }
 
   const totals = calculateMetricTotals(stats)
-  const recentStats = getLastNDays(stats, 14) // Last 2 weeks
+  const recentStats = getLastNDays(stats, NR_OF_DAYS) // Last 30 days
 
   // For trend calculation, compare last 7 days to previous 7 days
   const last7Days = getLastNDays(stats, 7)
-  const previous7Days = getLastNDays(stats, 14).slice(7)
+  const previous7Days = getLastNDays(stats, NR_OF_DAYS).slice(7)
 
   const calculateTrend = (metric: keyof ReturnType<typeof calculateMetricTotals>) => {
     const currentSum = last7Days.reduce((sum, stat) => {

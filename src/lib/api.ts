@@ -1,3 +1,5 @@
+import { NR_OF_DAYS } from "@/App";
+
 export interface StatsCount {
   webPageViews?: number;
   installCount?: number;
@@ -23,7 +25,7 @@ export const fetchExtensionStats = async (): Promise<ExtensionStats> => {
   try {
     // Calculate a date 30 days ago for the stats query
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - NR_OF_DAYS);
 
     // Format date as ISO string and encode for URL
     const afterDateParam = encodeURIComponent(thirtyDaysAgo.toISOString());
