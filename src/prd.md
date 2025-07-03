@@ -1,116 +1,109 @@
-# VS Code Extension Stats Dashboard PRD
+# VS Code Extension Stats Dashboard
 
 ## Core Purpose & Success
-- **Mission Statement**: To provide a clear visual dashboard for tracking the performance metrics of VS Code extensions.
-- **Success Indicators**: Users can easily identify trends in page views, installs, downloads, and uninstalls over time.
-- **Experience Qualities**: Clean, Insightful, Professional
+- **Mission Statement**: A clean, informative dashboard to visualize and monitor VS Code extension statistics.
+- **Success Indicators**: Ability to clearly see trends in page views, installs, downloads, and uninstalls over time.
+- **Experience Qualities**: Insightful, Elegant, Interactive
 
 ## Project Classification & Approach
 - **Complexity Level**: Light Application (multiple features with basic state)
-- **Primary User Activity**: Consuming (viewing data visualizations and metrics)
+- **Primary User Activity**: Consuming (viewing and analyzing extension statistics)
 
 ## Thought Process for Feature Selection
-- **Core Problem Analysis**: Extension developers need to track usage metrics to understand adoption patterns.
-- **User Context**: Users will likely check this dashboard periodically to monitor extension performance.
-- **Critical Path**: Load data → View summary metrics → Explore detailed trends
+- **Core Problem Analysis**: Extension developers need a simple way to visualize their extension's performance metrics.
+- **User Context**: Users will engage with this site to monitor extension performance, spot trends, and make data-driven decisions.
+- **Critical Path**: Load data > View summary metrics > Explore detailed charts > Analyze specific time periods
 - **Key Moments**: 
-  1. Initial data visualization showing key metrics
-  2. Interactive exploration of specific data points
+  1. First view of total metrics and performance trends
+  2. Interactive chart exploration with metric filtering
+  3. Detailed daily statistics review in tabular format
 
 ## Essential Features
-1. **Summary Statistics**
-   - What: Display total counts of key metrics
-   - Why: Provides immediate overview of extension performance
-   - Success: Users can quickly identify total numbers
+1. **Summary Cards**
+   - What: Display total counts and trends for key metrics
+   - Why: Provides immediate insight into overall extension performance
+   - Success: Clear, readable metrics with trend indicators
 
-2. **Time-Series Chart**
-   - What: Visualize metrics over time
-   - Why: Helps identify trends and patterns in extension adoption
-   - Success: Users can see how metrics change over the selected period
+2. **Interactive Charts**
+   - What: Line charts showing metric trends over time with filtering options
+   - Why: Enables visual analysis of performance patterns
+   - Success: Smooth interaction, clear data visualization, easy metric comparison
 
-3. **Data Table View**
-   - What: Detailed breakdown of daily statistics
-   - Why: Allows for precise examination of specific days
-   - Success: Users can access specific data points for any given day
-
-4. **Loading and Error States**
-   - What: Visual feedback during data loading and error handling
-   - Why: Ensures good UX when waiting for or failing to load data
-   - Success: Users understand when data is loading or if errors occur
+3. **Detailed Stats Table**
+   - What: Comprehensive table of daily metrics
+   - Why: Provides granular view of day-by-day performance
+   - Success: Well-organized, sortable data display
 
 ## Design Direction
 
 ### Visual Tone & Identity
 - **Emotional Response**: Confidence, clarity, and insight
-- **Design Personality**: Professional, clean, and focused
-- **Visual Metaphors**: Dashboard instruments, analytical tools
-- **Simplicity Spectrum**: Minimal interface to emphasize data visualization
+- **Design Personality**: Modern, clean, and professional
+- **Visual Metaphors**: Upward trending charts, data visualization elements
+- **Simplicity Spectrum**: Minimal interface with rich data visualization
 
 ### Color Strategy
-- **Color Scheme Type**: Monochromatic with strategic accent colors
-- **Primary Color**: Deep blue (#1e40af) - represents trust and professionalism
-- **Secondary Colors**: Lighter blues for supporting elements
-- **Accent Color**: Green (#10b981) for positive trends, red (#ef4444) for negative ones
-- **Color Psychology**: Blues convey trust and stability, perfect for data visualization
-- **Color Accessibility**: All color combinations meet WCAG AA contrast standards
-- **Foreground/Background Pairings**:
-  - Background: Light gray (#f8fafc) with Dark text (#1e293b)
-  - Card: White (#ffffff) with Dark text (#1e293b)
-  - Primary: Deep blue (#1e40af) with White text (#ffffff)
-  - Secondary: Light blue (#93c5fd) with Dark text (#1e293b)
-  - Accent: Green (#10b981) with White text (#ffffff)
-  - Muted: Very light gray (#f1f5f9) with Medium gray text (#64748b)
+- **Color Scheme Type**: Modern purple-based theme with complementary accent colors
+- **Primary Color**: Deep purple (var(--primary)) for main brand elements
+- **Secondary Colors**: Lighter purple (var(--secondary)) for supporting elements
+- **Accent Color**: Teal (var(--accent)) for highlighting positive trends
+- **Color Psychology**: Purple conveys creativity and quality, teal suggests growth
+- **Color Accessibility**: All color combinations meet WCAG AA contrast requirements
+- **Foreground/Background Pairings**: 
+  - Background (light purple-tinted white) with dark purple text (4.5:1+)
+  - Card (white) with dark text (4.5:1+)
+  - Primary (dark purple) with white text (4.5:1+)
+  - Secondary (light purple) with dark text (4.5:1+)
 
 ### Typography System
-- **Font Pairing Strategy**: Sans-serif throughout for clean, modern appearance
-- **Typographic Hierarchy**: Clear distinction between headings, labels, and values
-- **Font Personality**: Professional, clean, highly legible
-- **Readability Focus**: Optimized spacing and font sizes for dashboard context
-- **Typography Consistency**: Consistent type treatment across all metrics
-- **Which fonts**: Inter for headings, Open Sans for body text
-- **Legibility Check**: Both fonts are highly legible at various sizes
+- **Font Pairing Strategy**: Inter for headings (clean, modern) with Open Sans for body (excellent readability)
+- **Typographic Hierarchy**: Clear size distinction between headings (1.875rem), subheadings (1.25rem), and body text (1rem)
+- **Font Personality**: Professional, clean, and highly legible
+- **Readability Focus**: Comfortable line height (1.5x) and optimal character count per line
+- **Typography Consistency**: Consistent font weights and sizes across similar elements
+- **Selected Fonts**: Inter and Open Sans (Google Fonts)
 
 ### Visual Hierarchy & Layout
-- **Attention Direction**: Key metrics at top, followed by chart, then detailed table
-- **White Space Philosophy**: Generous spacing to prevent visual overload
-- **Grid System**: Card-based layout with consistent spacing
-- **Responsive Approach**: Stack cards vertically on smaller screens
-- **Content Density**: Balanced to show sufficient data without overwhelming
+- **Attention Direction**: Summary cards at top, followed by detailed chart, then table data
+- **White Space Philosophy**: Generous spacing between elements for clarity and focus
+- **Grid System**: Responsive grid using Tailwind's grid system
+- **Responsive Approach**: Column stacking on smaller screens, side-by-side on larger screens
+- **Content Density**: Balanced information density with focus on readability
 
 ### Animations
-- **Purposeful Meaning**: Subtle transitions when data loads or changes
-- **Hierarchy of Movement**: Chart animations to emphasize data changes
-- **Contextual Appropriateness**: Minimal loading animations for professional context
+- **Purposeful Meaning**: Subtle animations for loading state and chart transitions
+- **Hierarchy of Movement**: Primary animations for data loading, secondary for user interactions
+- **Contextual Appropriateness**: Minimal animations focused on enhancing data understanding
 
 ### UI Elements & Component Selection
-- **Component Usage**: Cards for metric groups, tabs for data view switching
-- **Component Customization**: Subtle shadows and rounded corners for cards
+- **Component Usage**: Cards for content grouping, tabs for content organization, tables for data display
+- **Component Customization**: Shadow depth for cards to create subtle layering
 - **Component States**: Clear hover and active states for interactive elements
-- **Icon Selection**: Simple, recognizable icons for each metric type
-- **Component Hierarchy**: Key metrics cards > Chart > Data table
-- **Spacing System**: Consistent 4-point spacing system using Tailwind's scale
-- **Mobile Adaptation**: Stacked layout with scrollable chart on mobile
+- **Icon Selection**: Phosphor icons for consistency and clean appearance
+- **Component Hierarchy**: Cards as primary containers, buttons and tabs as secondary elements
+- **Spacing System**: Consistent 4px-based spacing using Tailwind's spacing scale
+- **Mobile Adaptation**: Vertical stacking of components on smaller screens
 
 ### Visual Consistency Framework
-- **Design System Approach**: Component-based design for consistency
-- **Style Guide Elements**: Colors, typography, spacing, and component styles
-- **Visual Rhythm**: Consistent card sizing and spacing
-- **Brand Alignment**: Professional appearance aligned with developer tools
+- **Design System Approach**: Component-based design using shadcn components
+- **Style Guide Elements**: Consistent card styling, button appearances, and spacing
+- **Visual Rhythm**: Consistent padding and margins throughout the interface
+- **Brand Alignment**: Professional appearance matching VS Code's developer-focused brand
 
 ### Accessibility & Readability
-- **Contrast Goal**: WCAG AA compliance for all text and data visualization elements
+- **Contrast Goal**: WCAG AA compliance for all text and UI elements
 
 ## Edge Cases & Problem Scenarios
-- **Potential Obstacles**: Missing data for certain days or metrics
-- **Edge Case Handling**: Graceful display of incomplete or missing data
-- **Technical Constraints**: API response timing and potential failures
+- **Potential Obstacles**: API unavailability, incomplete data
+- **Edge Case Handling**: Graceful error states, handling of missing data points
+- **Technical Constraints**: Mobile screen size limitations for data visualization
 
 ## Implementation Considerations
-- **Scalability Needs**: Could be expanded to compare multiple extensions
-- **Testing Focus**: Verify correct data display and responsiveness
-- **Critical Questions**: How to best visualize multiple metrics on a single chart?
+- **Scalability Needs**: Support for longer time periods and additional metrics
+- **Testing Focus**: Responsive design, data loading states
+- **Critical Questions**: How to best visualize trends when data is sparse?
 
 ## Reflection
-- This approach emphasizes clarity and insights, which is perfect for analytical data.
-- We're assuming users primarily want to track trends rather than perform complex analysis.
-- What would make this exceptional is adding predictive trends or comparative benchmarks.
+- This approach uniquely combines quick-glance summary metrics with detailed exploration tools
+- We've assumed users primarily want trend analysis rather than raw data export
+- Adding filtering by date ranges would make this solution truly exceptional
