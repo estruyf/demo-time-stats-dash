@@ -4,7 +4,7 @@ import { calculateMetricTotals, getLastNDays } from "@/lib/utils"
 import { SummaryCard } from "@/components/summary-card"
 import { StatsChart } from "@/components/stats-chart"
 import { StatsTable } from "@/components/stats-table"
-import { ChartLineUp, DownloadSimple, Eye, InstallDesktop, ProhibitInset } from "@phosphor-icons/react"
+import { ChartLineUp, DownloadSimple, Eye, Desktop, ProhibitInset } from "@phosphor-icons/react"
 import { useKV } from "@github/spark/hooks"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -165,7 +165,7 @@ function App() {
         <SummaryCard 
           title="Installs" 
           value={totals.installs} 
-          icon={InstallDesktop}
+          icon={Desktop}
           trend={calculateTrend('installs')}
           trendLabel="vs previous week"
         />
