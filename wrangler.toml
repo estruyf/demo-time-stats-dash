@@ -1,0 +1,13 @@
+# Cloudflare Workers configuration file
+name = "vs-code-extension-stats"
+compatibility_date = "2023-05-18"
+
+# Configure routes for the functions
+[routes]
+pattern = "/api/stats"
+zone_name = "$ZONE_NAME"
+
+# Create a static site with the frontend
+[site]
+bucket = "./dist"
+entry-point = "."

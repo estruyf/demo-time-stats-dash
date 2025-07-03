@@ -1,23 +1,91 @@
-# ✨ Welcome to Your Spark Template!
-You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
+# VS Code Extension Stats Dashboard
 
-This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
+A beautiful dashboard for visualizing VS Code extension statistics from the Marketplace API.
 
-🚀 What's Inside?
-- A clean, minimal Spark environment
-- Pre-configured for local development
-- Ready to scale with your ideas
-  
-🧠 What Can You Do?
+## Features
 
-Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
+- View page views, installs, downloads, and uninstalls over time
+- Compare weekly trends with previous periods
+- Interactive chart visualization
+- Detailed daily statistics table
+- Support for real API data or mock data for development
 
-🧹 Just Exploring?
-No problem! If you were just checking things out and don’t need to keep this code:
+## Cloudflare Deployment
 
-- Simply delete your Spark.
-- Everything will be cleaned up — no traces left behind.
+This application is designed to run on Cloudflare Pages and Cloudflare Functions for the API layer.
 
-📄 License For Spark Template Resources 
+### Prerequisites
 
-The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
+1. Install Cloudflare Wrangler:
+```bash
+npm install -g wrangler
+```
+
+2. Login to Cloudflare:
+```bash
+wrangler login
+```
+
+3. Make sure you have a Cloudflare account and have set up a site/zone.
+
+### Deployment Steps
+
+1. Update the `wrangler.toml` file with your Cloudflare zone details:
+```toml
+name = "vs-code-extension-stats"
+compatibility_date = "2023-05-18"
+
+[routes]
+pattern = "/api/stats"
+zone_name = "your-zone-name.com" # Replace with your zone
+
+[site]
+bucket = "./dist"
+entry-point = "."
+```
+
+2. Build the application:
+```bash
+npm run build
+```
+
+3. Deploy to Cloudflare:
+```bash
+npx wrangler publish
+```
+
+4. Once deployed, you can access your application at the provided Cloudflare URL.
+
+### Environment Variables
+
+No environment variables are required for this application to function. All configuration is handled client-side.
+
+### API Security
+
+The VS Code Marketplace PAT token is:
+
+- Never stored on the server
+- Only temporarily passed through the API function
+- Stored client-side using the application's key-value storage
+
+## Development
+
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. The application will be available at http://localhost:3000
+
+## Using the Dashboard
+
+1. Access the deployed application
+2. Toggle between mock data and real API data
+3. To use real data, enter your VS Code Marketplace PAT token
+4. Explore the statistics across different metrics and time periods

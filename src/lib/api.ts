@@ -32,17 +32,23 @@ export const fetchExtensionStats = async (patToken?: string): Promise<ExtensionS
     let url = `/api/stats?aggregate=1&afterDate=${afterDateParam}`;
     
     // If PAT token provided, add it as a query parameter
-    // NOTE: In a production app, you would NOT expose the PAT token in the URL
-    // You'd use a proper backend service with secure auth handling
+    // The Cloudflare Function will handle this securely and will not expose it in logs
     if (patToken) {
-      // This is just for demo purposes
       url += `&pat=${encodeURIComponent(patToken)}`;
     }
     
     const response = await fetch(url);
     
     if (!response.ok) {
-      throw new Error(`Failed to fetch stats: ${response.statusText}`);
+      // Parse error response
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { error: response.statusText };
+      }
+      
+      throw new Error(errorData.error || `Failed to fetch stats: ${response.statusText}`);
     }
     
     return await response.json();

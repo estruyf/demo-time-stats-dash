@@ -119,6 +119,21 @@
   - How to best visualize trends when data is sparse?
   - How to securely handle authentication tokens in a client-side application?
 
+## Cloudflare Deployment
+- **API Structure**:
+  - Cloudflare Functions for handling API requests (/functions/api/stats.ts)
+  - Middleware for CORS and request handling (/functions/_middleware.ts)
+- **Deployment Process**:
+  1. Configure wrangler.toml with your zone information
+  2. Run `npm run build` to create the distribution files
+  3. Deploy with `npx wrangler publish`
+- **Security Considerations**:
+  - PAT token is never stored on Cloudflare, only passed through to the VS Code API
+  - Client-side storage keeps token in the user's browser only
+- **Environment Setup**:
+  - No environment variables required for basic functionality
+  - Custom domains can be configured in the Cloudflare dashboard
+
 ## Reflection
 - This approach uniquely combines quick-glance summary metrics with detailed exploration tools
 - We've implemented a hybrid approach allowing both mock data and real API integration
