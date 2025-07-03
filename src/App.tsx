@@ -5,7 +5,6 @@ import { SummaryCard } from "@/components/summary-card"
 import { StatsChart } from "@/components/stats-chart"
 import { StatsTable } from "@/components/stats-table"
 import { ChartLineUp, DownloadSimple, Eye, Desktop, ProhibitInset } from "@phosphor-icons/react"
-import { useKV } from "@github/spark/hooks"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast, Toaster } from "sonner"
@@ -14,17 +13,17 @@ function App() {
   const [stats, setStats] = useState<ExtensionStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [patToken, setPatToken, deletePatToken] = useKV<string>("vscode-marketplace-pat", "")
+  const [patToken, setPatToken, deletePatToken] = useState<string>("vscode-marketplace-pat", "")
   const [tokenInput, setTokenInput] = useState("")
-  const [useMockData, setUseMockData] = useKV<boolean>("use-mock-data", true)
+  const [useMockData, setUseMockData] = useState<boolean>("use-mock-data", true)
 
   useEffect(() => {
     async function loadStats() {
       try {
         setLoading(true)
-        
+
         let data: ExtensionStats;
-        
+
         if (useMockData) {
           // Use mock data when no token is provided or mock mode is enabled
           data = getMockStats()
@@ -34,7 +33,7 @@ function App() {
           data = await fetchExtensionStats(patToken)
           toast.success("Loaded real extension statistics")
         }
-        
+
         setStats(data)
         setError(null)
       } catch (err) {
@@ -75,33 +74,33 @@ function App() {
 
   const totals = calculateMetricTotals(stats)
   const recentStats = getLastNDays(stats, 14) // Last 2 weeks
-  
+
   // For trend calculation, compare last 7 days to previous 7 days
   const last7Days = getLastNDays(stats, 7)
   const previous7Days = getLastNDays(stats, 14).slice(7)
-  
+
   const calculateTrend = (metric: keyof ReturnType<typeof calculateMetricTotals>) => {
     const currentSum = last7Days.reduce((sum, stat) => {
       return sum + (
         metric === 'pageViews' ? (stat.counts.webPageViews || 0) :
-        metric === 'installs' ? (stat.counts.installCount || 0) :
-        metric === 'downloads' ? (stat.counts.webDownloadCount || 0) :
-        (stat.counts.uninstallCount || 0)
+          metric === 'installs' ? (stat.counts.installCount || 0) :
+            metric === 'downloads' ? (stat.counts.webDownloadCount || 0) :
+              (stat.counts.uninstallCount || 0)
       )
     }, 0)
-    
+
     const previousSum = previous7Days.reduce((sum, stat) => {
       return sum + (
         metric === 'pageViews' ? (stat.counts.webPageViews || 0) :
-        metric === 'installs' ? (stat.counts.installCount || 0) :
-        metric === 'downloads' ? (stat.counts.webDownloadCount || 0) :
-        (stat.counts.uninstallCount || 0)
+          metric === 'installs' ? (stat.counts.installCount || 0) :
+            metric === 'downloads' ? (stat.counts.webDownloadCount || 0) :
+              (stat.counts.uninstallCount || 0)
       )
     }, 0)
-    
+
     // Avoid division by zero
     if (previousSum === 0) return currentSum > 0 ? 100 : 0
-    
+
     return Math.round(((currentSum - previousSum) / previousSum) * 100)
   }
 
@@ -155,30 +154,30 @@ function App() {
       </header>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <SummaryCard 
-          title="Page Views" 
-          value={totals.pageViews} 
+        <SummaryCard
+          title="Page Views"
+          value={totals.pageViews}
           icon={Eye}
           trend={calculateTrend('pageViews')}
           trendLabel="vs previous week"
         />
-        <SummaryCard 
-          title="Installs" 
-          value={totals.installs} 
+        <SummaryCard
+          title="Installs"
+          value={totals.installs}
           icon={Desktop}
           trend={calculateTrend('installs')}
           trendLabel="vs previous week"
         />
-        <SummaryCard 
-          title="Downloads" 
-          value={totals.downloads} 
+        <SummaryCard
+          title="Downloads"
+          value={totals.downloads}
           icon={DownloadSimple}
           trend={calculateTrend('downloads')}
           trendLabel="vs previous week"
         />
-        <SummaryCard 
-          title="Uninstalls" 
-          value={totals.uninstalls} 
+        <SummaryCard
+          title="Uninstalls"
+          value={totals.uninstalls}
           icon={ProhibitInset}
           trend={calculateTrend('uninstalls')}
           trendLabel="vs previous week"
