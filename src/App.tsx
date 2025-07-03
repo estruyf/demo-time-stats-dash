@@ -11,7 +11,9 @@ function App() {
   const [stats, setStats] = useState<ExtensionStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [useMockData, setUseMockData] = useState<boolean>(true)
+  const [useMockData, setUseMockData] = useState<boolean>(
+    () => import.meta.env.VITE_USE_MOCK_DATA === "true"
+  )
 
   useEffect(() => {
     async function loadStats() {
