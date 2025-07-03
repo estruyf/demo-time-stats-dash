@@ -4,18 +4,14 @@ import { calculateMetricTotals, getLastNDays } from "@/lib/utils"
 import { SummaryCard } from "@/components/summary-card"
 import { StatsChart } from "@/components/stats-chart"
 import { StatsTable } from "@/components/stats-table"
-import { ChartLineUp, DownloadSimple, Eye, Desktop, ProhibitInset } from "@phosphor-icons/react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { DownloadSimpleIcon, EyeIcon, DesktopIcon, ProhibitInsetIcon } from "@phosphor-icons/react"
 import { toast, Toaster } from "sonner"
 
 function App() {
   const [stats, setStats] = useState<ExtensionStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [patToken, setPatToken, deletePatToken] = useState<string>("vscode-marketplace-pat", "")
-  const [tokenInput, setTokenInput] = useState("")
-  const [useMockData, setUseMockData] = useState<boolean>("use-mock-data", true)
+  const [useMockData, setUseMockData] = useState<boolean>(true)
 
   useEffect(() => {
     async function loadStats() {
@@ -30,7 +26,7 @@ function App() {
           toast.info("Using mock data. Provide a PAT token to fetch real data.")
         } else {
           // Use real API when token is provided
-          data = await fetchExtensionStats(patToken)
+          data = await fetchExtensionStats()
           toast.success("Loaded real extension statistics")
         }
 
@@ -48,7 +44,7 @@ function App() {
     }
 
     loadStats()
-  }, [useMockData, patToken])
+  }, [useMockData])
 
   if (loading) {
     return (
@@ -104,17 +100,6 @@ function App() {
     return Math.round(((currentSum - previousSum) / previousSum) * 100)
   }
 
-  const handleTokenSubmit = () => {
-    if (tokenInput.trim()) {
-      setPatToken(tokenInput.trim())
-      setTokenInput("")
-      setUseMockData(false)
-      toast.success("PAT token saved")
-    } else {
-      toast.error("Please enter a valid PAT token")
-    }
-  }
-
   const handleToggleMockData = () => {
     setUseMockData(!useMockData)
     toast.info(useMockData ? "Switching to API data" : "Switching to mock data")
@@ -128,57 +113,34 @@ function App() {
         <p className="text-muted-foreground">
           By {stats.publisherName} • {stats.statCount} days of statistics
         </p>
-        <div className="mt-4 p-4 bg-card rounded-lg border border-border">
-          <h2 className="text-sm font-medium mb-2">Data Source: {useMockData ? "Mock Data" : "VS Code Marketplace API"}</h2>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <div className="flex-1">
-              <Input
-                type="password"
-                placeholder="Enter your VS Code Marketplace PAT token"
-                value={tokenInput}
-                onChange={(e) => setTokenInput(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <Button onClick={handleTokenSubmit} disabled={!tokenInput.trim()}>
-              Save Token
-            </Button>
-            <Button variant="outline" onClick={handleToggleMockData}>
-              {useMockData ? "Use API Data" : "Use Mock Data"}
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            {patToken ? "Token saved! Using real data when possible." : "No token saved. Using mock data."}
-          </p>
-        </div>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <SummaryCard
           title="Page Views"
           value={totals.pageViews}
-          icon={Eye}
+          icon={EyeIcon}
           trend={calculateTrend('pageViews')}
           trendLabel="vs previous week"
         />
         <SummaryCard
           title="Installs"
           value={totals.installs}
-          icon={Desktop}
+          icon={DesktopIcon}
           trend={calculateTrend('installs')}
           trendLabel="vs previous week"
         />
         <SummaryCard
           title="Downloads"
           value={totals.downloads}
-          icon={DownloadSimple}
+          icon={DownloadSimpleIcon}
           trend={calculateTrend('downloads')}
           trendLabel="vs previous week"
         />
         <SummaryCard
           title="Uninstalls"
           value={totals.uninstalls}
-          icon={ProhibitInset}
+          icon={ProhibitInsetIcon}
           trend={calculateTrend('uninstalls')}
           trendLabel="vs previous week"
         />
