@@ -19,9 +19,27 @@ export interface ExtensionStats {
   dailyStats: DailyStat[];
 }
 
-export const fetchExtensionStats = async (): Promise<ExtensionStats> => {
+export const fetchExtensionStats = async (patToken?: string): Promise<ExtensionStats> => {
   try {
-    const response = await fetch('/api/stats');
+    // Calculate a date 30 days ago for the stats query
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    // Format date as ISO string and encode for URL
+    const afterDateParam = encodeURIComponent(thirtyDaysAgo.toISOString());
+    
+    // Build the URL with query parameters
+    let url = `/api/stats?aggregate=1&afterDate=${afterDateParam}`;
+    
+    // If PAT token provided, add it as a query parameter
+    // NOTE: In a production app, you would NOT expose the PAT token in the URL
+    // You'd use a proper backend service with secure auth handling
+    if (patToken) {
+      // This is just for demo purposes
+      url += `&pat=${encodeURIComponent(patToken)}`;
+    }
+    
+    const response = await fetch(url);
     
     if (!response.ok) {
       throw new Error(`Failed to fetch stats: ${response.statusText}`);

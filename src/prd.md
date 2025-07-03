@@ -12,24 +12,30 @@
 ## Thought Process for Feature Selection
 - **Core Problem Analysis**: Extension developers need a simple way to visualize their extension's performance metrics.
 - **User Context**: Users will engage with this site to monitor extension performance, spot trends, and make data-driven decisions.
-- **Critical Path**: Load data > View summary metrics > Explore detailed charts > Analyze specific time periods
+- **Critical Path**: Configure data source > Load data > View summary metrics > Explore detailed charts > Analyze specific time periods
 - **Key Moments**: 
-  1. First view of total metrics and performance trends
-  2. Interactive chart exploration with metric filtering
-  3. Detailed daily statistics review in tabular format
+  1. Configuring real VS Code Marketplace API access with PAT token
+  2. First view of total metrics and performance trends
+  3. Interactive chart exploration with metric filtering
+  4. Detailed daily statistics review in tabular format
 
 ## Essential Features
-1. **Summary Cards**
+1. **API Configuration**
+   - What: Allow users to input their VS Code Marketplace PAT token for real API access
+   - Why: Provides access to real-time extension statistics
+   - Success: Secure token storage and smooth API integration
+
+2. **Summary Cards**
    - What: Display total counts and trends for key metrics
    - Why: Provides immediate insight into overall extension performance
    - Success: Clear, readable metrics with trend indicators
 
-2. **Interactive Charts**
+3. **Interactive Charts**
    - What: Line charts showing metric trends over time with filtering options
    - Why: Enables visual analysis of performance patterns
    - Success: Smooth interaction, clear data visualization, easy metric comparison
 
-3. **Detailed Stats Table**
+4. **Detailed Stats Table**
    - What: Comprehensive table of daily metrics
    - Why: Provides granular view of day-by-day performance
    - Success: Well-organized, sortable data display
@@ -64,7 +70,7 @@
 - **Selected Fonts**: Inter and Open Sans (Google Fonts)
 
 ### Visual Hierarchy & Layout
-- **Attention Direction**: Summary cards at top, followed by detailed chart, then table data
+- **Attention Direction**: API configuration at top, summary cards below, followed by detailed chart, then table data
 - **White Space Philosophy**: Generous spacing between elements for clarity and focus
 - **Grid System**: Responsive grid using Tailwind's grid system
 - **Responsive Approach**: Column stacking on smaller screens, side-by-side on larger screens
@@ -94,16 +100,26 @@
 - **Contrast Goal**: WCAG AA compliance for all text and UI elements
 
 ## Edge Cases & Problem Scenarios
-- **Potential Obstacles**: API unavailability, incomplete data
-- **Edge Case Handling**: Graceful error states, handling of missing data points
+- **Potential Obstacles**: API unavailability, incomplete data, authentication issues
+- **Edge Case Handling**: 
+  - Graceful error states
+  - Handling of missing data points
+  - Fallback to mock data when API access fails
+  - Secure storage of PAT token
 - **Technical Constraints**: Mobile screen size limitations for data visualization
 
 ## Implementation Considerations
 - **Scalability Needs**: Support for longer time periods and additional metrics
-- **Testing Focus**: Responsive design, data loading states
-- **Critical Questions**: How to best visualize trends when data is sparse?
+- **Testing Focus**: 
+  - API integration reliability
+  - Token security
+  - Responsive design
+  - Data loading states
+- **Critical Questions**: 
+  - How to best visualize trends when data is sparse?
+  - How to securely handle authentication tokens in a client-side application?
 
 ## Reflection
 - This approach uniquely combines quick-glance summary metrics with detailed exploration tools
-- We've assumed users primarily want trend analysis rather than raw data export
+- We've implemented a hybrid approach allowing both mock data and real API integration
 - Adding filtering by date ranges would make this solution truly exceptional
