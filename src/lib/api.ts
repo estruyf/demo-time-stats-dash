@@ -21,7 +21,79 @@ export interface ExtensionStats {
   dailyStats: DailyStat[];
 }
 
-export const fetchExtensionStats = async (): Promise<ExtensionStats> => {
+export interface Extension {
+  extensionName: string;
+  displayName: string;
+  shortDescription?: string;
+}
+
+export interface MarketplaceExtension {
+  extensionId: string;
+  extensionName: string;
+  displayName: string;
+  shortDescription?: string;
+  publisher: {
+    publisherName: string;
+    displayName: string;
+  };
+}
+
+export interface MarketplaceResponse {
+  results: Array<{
+    extensions: MarketplaceExtension[];
+  }>;
+}
+
+// Mock extensions for development
+const MOCK_ELIO_EXTENSIONS: Extension[] = [
+  { extensionName: "vscode-demo-time", displayName: "Demo Time" },
+  { extensionName: "vscode-front-matter", displayName: "Front Matter CMS" },
+  { extensionName: "vscode-helpers", displayName: "VSCode Helpers" },
+  { extensionName: "vscode-file-type-icons", displayName: "File Type Icons" },
+  { extensionName: "vscode-projects-manager", displayName: "Projects Manager" },
+  { extensionName: "vscode-squash-commits", displayName: "Squash Commits" },
+  { extensionName: "vscode-twitter", displayName: "Twitter" },
+  { extensionName: "doctor", displayName: "Doctor" },
+  { extensionName: "vscode-spot-images", displayName: "Spot Images" },
+  { extensionName: "vscode-github-script", displayName: "GitHub Script" },
+  { extensionName: "chatgpt-copilot", displayName: "ChatGPT Copilot" },
+  { extensionName: "vscode-beta-ui", displayName: "Beta UI" },
+  { extensionName: "vscode-media-preview", displayName: "Media Preview" },
+  { extensionName: "vscode-theme-generator", displayName: "Theme Generator" },
+  {
+    extensionName: "vscode-json-autocomplete",
+    displayName: "JSON Autocomplete",
+  },
+];
+
+export const fetchPublisherExtensions = async (): Promise<Extension[]> => {
+  try {
+    const response = await fetch("/api/extensions", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch extensions: ${response.statusText}`);
+    }
+
+    const data: Extension[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching extensions:", error);
+    throw error;
+  }
+};
+
+export const getMockExtensions = (): Extension[] => {
+  return MOCK_ELIO_EXTENSIONS;
+};
+
+export const fetchExtensionStats = async (
+  extensionName = "vscode-demo-time"
+): Promise<ExtensionStats> => {
   try {
     // Calculate a date 30 days ago for the stats query
     const thirtyDaysAgo = new Date();
@@ -30,8 +102,10 @@ export const fetchExtensionStats = async (): Promise<ExtensionStats> => {
     // Format date as ISO string and encode for URL
     const afterDateParam = encodeURIComponent(thirtyDaysAgo.toISOString());
 
-    // Build the URL with query parameters
-    let url = `/api/stats?aggregate=1&afterDate=${afterDateParam}`;
+    // Build the URL with query parameters, including the extension name
+    let url = `/api/stats?aggregate=1&afterDate=${afterDateParam}&extension=${encodeURIComponent(
+      extensionName
+    )}`;
 
     const response = await fetch(url);
 
@@ -57,9 +131,15 @@ export const fetchExtensionStats = async (): Promise<ExtensionStats> => {
 };
 
 // Mock data for development or if API is unavailable
-export const getMockStats = (): ExtensionStats => {
+export const getMockStats = (
+  extensionName = "vscode-demo-time"
+): ExtensionStats => {
+  const extension =
+    MOCK_ELIO_EXTENSIONS.find((ext) => ext.extensionName === extensionName) ||
+    MOCK_ELIO_EXTENSIONS[0];
+
   return {
-    extensionName: "vscode-demo-time",
+    extensionName: extension.extensionName,
     publisherName: "eliostruyf",
     statCount: 31,
     dailyStats: [

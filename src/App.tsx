@@ -1,9 +1,11 @@
+import * as React from "react"
 import { useEffect, useState } from "react"
-import { ExtensionStats, fetchExtensionStats, getMockStats } from "@/lib/api"
+import { ExtensionStats, fetchExtensionStats, getMockStats, fetchPublisherExtensions, getMockExtensions, Extension } from "@/lib/api"
 import { calculateMetricTotals, getLastNDays } from "@/lib/utils"
 import { SummaryCard } from "@/components/summary-card"
 import { StatsChart } from "@/components/stats-chart"
 import { StatsTable } from "@/components/stats-table"
+import { ExtensionSelector } from "@/components/extension-selector"
 import { DownloadSimpleIcon, EyeIcon, DesktopIcon, ProhibitInsetIcon } from "@phosphor-icons/react"
 import { toast, Toaster } from "sonner"
 
@@ -11,11 +13,40 @@ export const NR_OF_DAYS = 30 // Default to 30 days for stats
 
 function App() {
   const [stats, setStats] = useState<ExtensionStats | null>(null)
+  const [extensions, setExtensions] = useState<Extension[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedExtension, setSelectedExtension] = useState<string>("vscode-demo-time")
   const [useMockData, setUseMockData] = useState<boolean>(
     () => import.meta.env.VITE_USE_MOCK_DATA === "true"
   )
+
+  // Fetch extensions on component mount
+  useEffect(() => {
+    async function loadExtensions() {
+      try {
+        let extensionsList: Extension[];
+
+        if (useMockData) {
+          extensionsList = getMockExtensions()
+        } else {
+          try {
+            extensionsList = await fetchPublisherExtensions()
+          } catch (err) {
+            console.warn("Failed to fetch real extensions, using mock data:", err)
+            extensionsList = getMockExtensions()
+          }
+        }
+
+        setExtensions(extensionsList)
+      } catch (err) {
+        console.error("Error loading extensions:", err)
+        setExtensions(getMockExtensions())
+      }
+    }
+
+    loadExtensions()
+  }, [useMockData])
 
   useEffect(() => {
     async function loadStats() {
@@ -26,11 +57,11 @@ function App() {
 
         if (useMockData) {
           // Use mock data when no token is provided or mock mode is enabled
-          data = getMockStats()
+          data = getMockStats(selectedExtension)
           toast.info("Using mock data. Provide a PAT token to fetch real data.")
         } else {
           // Use real API when token is provided
-          data = await fetchExtensionStats()
+          data = await fetchExtensionStats(selectedExtension)
           toast.success("Loaded real extension statistics")
         }
 
@@ -41,14 +72,14 @@ function App() {
         console.error(err)
         setUseMockData(true) // Fall back to mock data on error
         toast.error("API call failed. Using mock data instead.")
-        setStats(getMockStats())
+        setStats(getMockStats(selectedExtension))
       } finally {
         setLoading(false)
       }
     }
 
     loadStats()
-  }, [useMockData])
+  }, [useMockData, selectedExtension])
 
   if (loading) {
     return (
@@ -119,10 +150,22 @@ function App() {
     <div className="min-h-screen bg-background p-4 md:p-8">
       <Toaster position="top-right" />
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight mb-1">{stats.extensionName}</h1>
-        <p className="text-muted-foreground">
-          By {stats.publisherName} • {stats.statCount} days of statistics
-        </p>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight mb-1">{stats.extensionName}</h1>
+            <p className="text-muted-foreground">
+              By {stats.publisherName} • {stats.statCount} days of statistics
+            </p>
+          </div>
+          {extensions.length > 0 && (
+            <ExtensionSelector
+              extensions={extensions}
+              selectedExtension={selectedExtension}
+              onSelectionChange={setSelectedExtension}
+              disabled={loading}
+            />
+          )}
+        </div>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
