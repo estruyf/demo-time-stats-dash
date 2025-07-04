@@ -10,6 +10,7 @@ export const onRequest = async (context: any) => {
     const aggregate = searchParams.get("aggregate") || "1";
     const afterDate = searchParams.get("afterDate") || "";
     const extension = searchParams.get("extension") || "vscode-demo-time";
+    const publisher = searchParams.get("publisher") || "eliostruyf";
     const pat = context.env?.VSCODE_MARKETPLACE_PAT || "";
 
     // Validate PAT token exists if not using mock data
@@ -21,7 +22,7 @@ export const onRequest = async (context: any) => {
     }
 
     // Build the Marketplace API URL with the specified extension
-    const apiUrl = `https://marketplace.visualstudio.com/_apis/gallery/publishers/eliostruyf/extensions/${extension}/stats?aggregate=${aggregate}&afterDate=${afterDate}`;
+    const apiUrl = `https://marketplace.visualstudio.com/_apis/gallery/publishers/${publisher}/extensions/${extension}/stats?aggregate=${aggregate}&afterDate=${afterDate}`;
 
     // Make the request to the VS Code Marketplace API
     const response = await fetch(apiUrl, {
