@@ -156,6 +156,13 @@ function App() {
             <p className="text-muted-foreground">
               By {stats.publisherName} • {stats.statCount} days of statistics
             </p>
+            <div className="mt-2">
+              <img
+                src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fstats.demotime.show"
+                alt="Visitor Badge"
+                className="inline-block"
+              />
+            </div>
           </div>
           {extensions.length > 0 && (
             <ExtensionSelector

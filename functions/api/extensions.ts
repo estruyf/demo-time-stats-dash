@@ -64,11 +64,12 @@ export const onRequest = async (context: any) => {
     const data = await response.json();
 
     // Transform the response to our simplified Extension interface
-    const extensions = data.results[0]?.extensions?.map((ext: any) => ({
-      extensionName: ext.extensionName,
-      displayName: ext.displayName,
-      shortDescription: ext.shortDescription,
-    })) || [];
+    const extensions =
+      data.results[0]?.extensions?.map((ext: any) => ({
+        extensionName: ext.extensionName,
+        displayName: ext.displayName,
+        shortDescription: ext.shortDescription,
+      })) || [];
 
     return new Response(JSON.stringify(extensions), {
       headers: { "Content-Type": "application/json" },
