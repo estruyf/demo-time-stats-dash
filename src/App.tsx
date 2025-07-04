@@ -162,9 +162,9 @@ function App() {
                 alt="Visitor Badge"
                 className="inline-block"
               />
-              <a 
-                href="https://github.com/estruyf/demo-time-stats-dash" 
-                target="_blank" 
+              <a
+                href="https://github.com/estruyf/demo-time-stats-dash"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
               >
