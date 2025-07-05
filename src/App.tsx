@@ -107,8 +107,8 @@ function App() {
   const recentStats = getLastNDays(stats, NR_OF_DAYS) // Last 30 days
 
   // For trend calculation, compare last 7 days to previous 7 days
-  // Get last 14 days of data (most recent first after reverse)
-  const last14DaysData = stats.dailyStats.slice(0, 14).reverse()
+  // Stats are ordered from most recent to oldest
+  const last14DaysData = stats.dailyStats.slice(0, 14)
   const last7Days = last14DaysData.slice(0, 7)  // Most recent 7 days
   const previous7Days = last14DaysData.slice(7, 14)  // Previous 7 days
 
@@ -136,9 +136,13 @@ function App() {
     console.log(`Last 7 days length: ${last7Days.length}, Previous 7 days length: ${previous7Days.length}`)
 
     // Avoid division by zero
-    if (previousSum === 0) return currentSum > 0 ? 100 : 0
+    if (previousSum === 0) {
+      if (currentSum === 0) return 0
+      return metric === 'uninstalls' ? -100 : 100
+    }
 
-    return Math.round(((currentSum - previousSum) / previousSum) * 100)
+    const diff = Math.round(((currentSum - previousSum) / previousSum) * 100)
+    return metric === 'uninstalls' ? -diff : diff
   }
 
   const handleToggleMockData = () => {
