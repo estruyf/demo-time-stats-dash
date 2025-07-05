@@ -1,12 +1,12 @@
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { ExtensionStats, fetchExtensionStats, getMockStats, fetchPublisherExtensions, getMockExtensions, Extension } from "@/lib/api"
+import { ExtensionStats, fetchExtensionStats, getMockStats, fetchPublisherExtensions, getMockExtensions, Extension, fetchExtensionInfo, ExtensionInfo } from "@/lib/api"
 import { calculateMetricTotals, getLastNDays } from "@/lib/utils"
 import { SummaryCard } from "@/components/summary-card"
 import { StatsChart } from "@/components/stats-chart"
 import { StatsTable } from "@/components/stats-table"
 import { ExtensionSelector } from "@/components/extension-selector"
-import { DownloadSimpleIcon, EyeIcon, DesktopIcon, ProhibitInsetIcon } from "@phosphor-icons/react"
+import { DownloadSimpleIcon, EyeIcon, DesktopIcon, ProhibitInsetIcon, StarIcon } from "@phosphor-icons/react"
 import { toast, Toaster } from "sonner"
 
 export const NR_OF_DAYS = 30 // Default to 30 days for stats
@@ -16,6 +16,7 @@ function App() {
   const [extensions, setExtensions] = useState<Extension[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [extensionInfo, setExtensionInfo] = useState<ExtensionInfo | null>(null)
   const [selectedExtension, setSelectedExtension] = useState<string>("vscode-demo-time")
   const [useMockData, setUseMockData] = useState<boolean>(
     () => import.meta.env.VITE_USE_MOCK_DATA === "true"
@@ -80,6 +81,20 @@ function App() {
 
     loadStats()
   }, [useMockData, selectedExtension])
+
+  useEffect(() => {
+    async function loadExtensionInfo() {
+      try {
+        const info = await fetchExtensionInfo(selectedExtension)
+        setExtensionInfo(info)
+      } catch (err) {
+        console.error('Failed to load extension info', err)
+        setExtensionInfo(null)
+      }
+    }
+
+    loadExtensionInfo()
+  }, [selectedExtension])
 
   if (loading) {
     return (
@@ -190,6 +205,18 @@ function App() {
                   <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
                 </svg>
               </a>
+              {extensionInfo && (
+                <span className="text-sm text-muted-foreground flex items-center gap-1">
+                  <DesktopIcon className="w-4 h-4" />
+                  {extensionInfo.installs.toLocaleString()} installs
+                </span>
+              )}
+              {extensionInfo && (
+                <span className="text-sm text-muted-foreground flex items-center gap-1">
+                  <StarIcon className="w-4 h-4" />
+                  {extensionInfo.averageRating.toFixed(1)} ({extensionInfo.ratingCount})
+                </span>
+              )}
             </div>
           </div>
           {extensions.length > 0 && (

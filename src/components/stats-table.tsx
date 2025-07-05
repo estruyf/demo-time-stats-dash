@@ -97,9 +97,9 @@ export function StatsTable({ data, className }: StatsTableProps) {
       <CardHeader>
         <CardTitle>Daily Statistics</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-x-auto">
         <div className="rounded-md border">
-          <Table>
+          <Table className="min-w-max">
             <TableHeader>
               <TableRow>
                 <SortableHeader field="date">Date</SortableHeader>
