@@ -44,6 +44,12 @@ export interface MarketplaceResponse {
   }>;
 }
 
+export interface ExtensionInfo {
+  installs: number;
+  averageRating: number;
+  ratingCount: number;
+}
+
 // Mock extensions for development
 const MOCK_ELIO_EXTENSIONS: Extension[] = [
   { extensionName: "vscode-demo-time", displayName: "Demo Time" },
@@ -89,6 +95,64 @@ export const fetchPublisherExtensions = async (): Promise<Extension[]> => {
 
 export const getMockExtensions = (): Extension[] => {
   return MOCK_ELIO_EXTENSIONS;
+};
+
+export const fetchExtensionInfo = async (
+  extensionName = "vscode-demo-time",
+  publisher = "eliostruyf",
+): Promise<ExtensionInfo> => {
+  const extId = `${publisher}.${extensionName}`;
+
+  const response = await fetch(
+    "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json;api-version=7.1-preview.1;excludeUrls=true",
+      },
+      body: JSON.stringify({
+        assetTypes: null,
+        filters: [
+          {
+            criteria: [
+              { filterType: 8, value: "Microsoft.VisualStudio.Code" },
+              { filterType: 7, value: extId },
+            ],
+            direction: 1,
+            pageSize: 1,
+            pageNumber: 1,
+            sortBy: 0,
+            sortOrder: 0,
+            pagingToken: null,
+          },
+        ],
+        flags: 870,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch extension info");
+  }
+
+  const data: any = await response.json();
+  const extension = data?.results?.[0]?.extensions?.[0];
+
+  if (!extension) {
+    throw new Error("Extension info not found");
+  }
+
+  const getStat = (name: string) => {
+    const stat = extension.statistics.find((s: any) => s.statisticName === name);
+    return stat ? stat.value : 0;
+  };
+
+  return {
+    installs: getStat("install"),
+    averageRating: getStat("averagerating"),
+    ratingCount: getStat("ratingcount"),
+  };
 };
 
 export const fetchExtensionStats = async (
