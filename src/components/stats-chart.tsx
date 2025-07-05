@@ -93,7 +93,7 @@ export function StatsChart({ data, className }: StatsChartProps) {
             <TabsTrigger value="uninstalls">Uninstalls</TabsTrigger>
           </TabsList>
           
-          <div className="h-80">
+          <div className="h-80 w-full">
             <TabsContent value="all" className="h-full mt-0">
               <Line 
                 options={options} 
