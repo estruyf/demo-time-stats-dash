@@ -32,7 +32,7 @@ interface StatsChartProps {
 export function StatsChart({ data, className }: StatsChartProps) {
   // Prepare data for the chart
   const labels = data.map(stat => formatDate(stat.statisticDate))
-  
+
   const datasets = {
     pageViews: {
       label: 'Page Views',
@@ -79,7 +79,7 @@ export function StatsChart({ data, className }: StatsChartProps) {
   }
 
   return (
-    <Card className={className}>
+    <Card className={`${className} overflow-hidden overflow-x-scroll`}>
       <CardHeader>
         <CardTitle>Metrics Over Time</CardTitle>
       </CardHeader>
@@ -92,11 +92,11 @@ export function StatsChart({ data, className }: StatsChartProps) {
             <TabsTrigger value="downloads">Downloads</TabsTrigger>
             <TabsTrigger value="uninstalls">Uninstalls</TabsTrigger>
           </TabsList>
-          
+
           <div className="h-80 w-full">
             <TabsContent value="all" className="h-full mt-0">
-              <Line 
-                options={options} 
+              <Line
+                options={options}
                 data={{
                   labels,
                   datasets: [
@@ -105,47 +105,47 @@ export function StatsChart({ data, className }: StatsChartProps) {
                     datasets.downloads,
                     datasets.uninstalls
                   ]
-                }} 
+                }}
               />
             </TabsContent>
-            
+
             <TabsContent value="pageViews" className="h-full mt-0">
-              <Line 
-                options={options} 
+              <Line
+                options={options}
                 data={{
                   labels,
                   datasets: [datasets.pageViews]
-                }} 
+                }}
               />
             </TabsContent>
-            
+
             <TabsContent value="installs" className="h-full mt-0">
-              <Line 
-                options={options} 
+              <Line
+                options={options}
                 data={{
                   labels,
                   datasets: [datasets.installs]
-                }} 
+                }}
               />
             </TabsContent>
-            
+
             <TabsContent value="downloads" className="h-full mt-0">
-              <Line 
-                options={options} 
+              <Line
+                options={options}
                 data={{
                   labels,
                   datasets: [datasets.downloads]
-                }} 
+                }}
               />
             </TabsContent>
-            
+
             <TabsContent value="uninstalls" className="h-full mt-0">
-              <Line 
-                options={options} 
+              <Line
+                options={options}
                 data={{
                   labels,
                   datasets: [datasets.uninstalls]
-                }} 
+                }}
               />
             </TabsContent>
           </div>

@@ -175,49 +175,6 @@ function App() {
             <p className="text-muted-foreground">
               By {stats.publisherName} • {stats.statCount} days of statistics
             </p>
-            <div className="mt-2 flex items-center gap-3">
-              <img
-                src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fstats.demotime.show"
-                alt="Visitor Badge"
-                className="inline-block"
-              />
-              <a
-                href="https://github.com/estruyf/demo-time-stats-dash"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              >
-                <span>View Source</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
-                  <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a
-                href={`https://marketplace.visualstudio.com/items?itemName=${stats.publisherName}.${stats.extensionName}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              >
-                <span>View Extension</span>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
-                  <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
-                </svg>
-              </a>
-              {extensionInfo && (
-                <span className="text-sm text-muted-foreground flex items-center gap-1">
-                  <DesktopIcon className="w-4 h-4" />
-                  {extensionInfo.installs.toLocaleString()} installs
-                </span>
-              )}
-              {extensionInfo && (
-                <span className="text-sm text-muted-foreground flex items-center gap-1">
-                  <StarIcon className="w-4 h-4" />
-                  {extensionInfo.averageRating.toFixed(1)} ({extensionInfo.ratingCount})
-                </span>
-              )}
-            </div>
           </div>
           {extensions.length > 0 && (
             <ExtensionSelector
@@ -226,6 +183,45 @@ function App() {
               onSelectionChange={setSelectedExtension}
               disabled={loading}
             />
+          )}
+        </div>
+
+        <div className="mt-2 grid grid-cols-2 gap-3 md:flex md:items-center md:gap-3">
+          <a
+            href="https://github.com/estruyf/demo-time-stats-dash"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          >
+            <span>View Source</span>
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+            </svg>
+          </a>
+          <a
+            href={`https://marketplace.visualstudio.com/items?itemName=${stats.publisherName}.${stats.extensionName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          >
+            <span>View Extension</span>
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+            </svg>
+          </a>
+          {extensionInfo && (
+            <span className="text-sm text-muted-foreground flex items-center gap-1">
+              <DesktopIcon className="w-4 h-4" />
+              {extensionInfo.installs.toLocaleString()} installs
+            </span>
+          )}
+          {extensionInfo && (
+            <span className="text-sm text-muted-foreground flex items-center gap-1">
+              <StarIcon className="w-4 h-4" />
+              {extensionInfo.averageRating.toFixed(1)} ({extensionInfo.ratingCount})
+            </span>
           )}
         </div>
       </header>
@@ -267,6 +263,15 @@ function App() {
 
       <div className="grid gap-4 md:grid-cols-1">
         <StatsTable data={recentStats} />
+      </div>
+
+
+      <div className="mt-8">
+        <img
+          src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fstats.demotime.show"
+          alt="Visitor Badge"
+          className="mx-auto"
+        />
       </div>
     </div>
   )

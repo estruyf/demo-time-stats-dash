@@ -67,33 +67,31 @@ export function StatsTable({ data, className }: StatsTableProps) {
   }, [data, sortField, sortDirection])
 
   const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
-    <TableHead 
+    <TableHead
       className="cursor-pointer hover:bg-muted/50 select-none"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center space-x-1">
         <span>{children}</span>
         <div className="flex flex-col">
-          <ChevronUpIcon 
-            className={`h-3 w-3 ${
-              sortField === field && sortDirection === 'asc' 
-                ? 'text-foreground' 
+          <ChevronUpIcon
+            className={`h-3 w-3 ${sortField === field && sortDirection === 'asc'
+                ? 'text-foreground'
                 : 'text-muted-foreground/50'
-            }`} 
+              }`}
           />
-          <ChevronDownIcon 
-            className={`h-3 w-3 -mt-1 ${
-              sortField === field && sortDirection === 'desc' 
-                ? 'text-foreground' 
+          <ChevronDownIcon
+            className={`h-3 w-3 -mt-1 ${sortField === field && sortDirection === 'desc'
+                ? 'text-foreground'
                 : 'text-muted-foreground/50'
-            }`} 
+              }`}
           />
         </div>
       </div>
     </TableHead>
   )
   return (
-    <Card className={className}>
+    <Card className={`${className} overflow-hidden overflow-x-scroll`}>
       <CardHeader>
         <CardTitle>Daily Statistics</CardTitle>
       </CardHeader>
