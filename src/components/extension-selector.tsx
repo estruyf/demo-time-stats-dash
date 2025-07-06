@@ -39,7 +39,7 @@ export function ExtensionSelector({
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          {extensions.map((extension) => (
+          {(extensions.slice().sort((a, b) => a.displayName.localeCompare(b.displayName))).map((extension) => (
             <SelectItem key={extension.extensionName} value={extension.extensionName}>
               <div className="flex flex-col">
                 <span className="font-medium">{extension.displayName}</span>
